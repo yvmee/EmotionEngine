@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EmotionEngine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,12 +22,17 @@ public class PlayerInputController : MonoBehaviour
     private static readonly int IsMoving = Animator.StringToHash("isMoving");
     private static readonly int SwordAttackAn = Animator.StringToHash("swordAttack");
 
+    private EmotionModel emotionModel;
+    public DiscreteEmotion e;
+
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _renderer = GetComponent<SpriteRenderer>();
+
+        emotionModel = FindObjectOfType<EmotionModel>();
     }
 
     private void FixedUpdate()
@@ -91,6 +97,12 @@ public class PlayerInputController : MonoBehaviour
     void OnFire()
     {
         _animator.SetTrigger(SwordAttackAn);
+    }
+
+    void OnSendEmotionEvent()
+    {
+        Debug.Log("Pressed E");
+        emotionModel.RaiseSoftEmotionEvent(e);
     }
 
     public void SwordAttack()

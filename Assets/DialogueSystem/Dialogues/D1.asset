@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e323e53c3bde6a747874f47c844aa668, type: 3}
+  m_Name: D1
+  m_EditorClassIdentifier: 
+  _dialogueLine: {fileID: 11400000, guid: f4baa5b0e0d93384fa0532fdc6af87e5, type: 2}
+  choices:
+  - choicePreview: felt sad
+    choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
+  - choicePreview: hate the woods
+    choiceNode: {fileID: 11400000, guid: 4d2d9e37de7d8724db705cb74b3ae79c, type: 2}
+  - choicePreview: looking for a fun adventure
+    choiceNode: {fileID: 11400000, guid: c7ee768f8e261f44da401430aac2df7d, type: 2}
