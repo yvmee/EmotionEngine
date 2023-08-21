@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e323e53c3bde6a747874f47c844aa668, type: 3}
+  m_Name: D1.1
+  m_EditorClassIdentifier: 
+  _dialogueLine: {fileID: 11400000, guid: f4baa5b0e0d93384fa0532fdc6af87e5, type: 2}
+  choices:
+  - choicePreview: Money
+    choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
+    emotionPulse: {fileID: 0}
+    hardEmotion: 0
+  - choicePreview: I'm here to help
+    choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
+    emotionPulse: {fileID: 0}
+    hardEmotion: 0
+  - choicePreview: A fun adventure
+    choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
+    emotionPulse: {fileID: 11400000, guid: 901c27fa03082964c9b5ca8217015ed9, type: 2}
+    hardEmotion: 0

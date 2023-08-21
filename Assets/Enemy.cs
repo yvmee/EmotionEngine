@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using EmotionEngine;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public DiscreteEmotion emotion;
+    public bool hardEmotion;
+    private bool _dead;
     public float Health
     {
         set
@@ -19,6 +23,8 @@ public class Enemy : MonoBehaviour
 
     private void Defeated()
     {
+        _dead = true;
+        if (emotion != null) EmotionModel.EmotionPulseSend.Invoke(emotion, hardEmotion);
         Destroy(gameObject);
     }
 

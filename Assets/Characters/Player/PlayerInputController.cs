@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EmotionEngine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerInputController : MonoBehaviour
 {
@@ -22,8 +23,19 @@ public class PlayerInputController : MonoBehaviour
     private static readonly int IsMoving = Animator.StringToHash("isMoving");
     private static readonly int SwordAttackAn = Animator.StringToHash("swordAttack");
 
-    private EmotionModel emotionModel;
+    private bool _interacting;
+    public UITextController uiTextController;
+
+    public GameObject pauseMenu;
+
+    private EmotionModel _emotionModel;
     public DiscreteEmotion e;
+    
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +44,7 @@ public class PlayerInputController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _renderer = GetComponent<SpriteRenderer>();
 
-        emotionModel = FindObjectOfType<EmotionModel>();
+        _emotionModel = FindObjectOfType<EmotionModel>();
     }
 
     private void FixedUpdate()
@@ -96,20 +108,76 @@ public class PlayerInputController : MonoBehaviour
 
     void OnFire()
     {
+        if (_interacting) return;
         _animator.SetTrigger(SwordAttackAn);
     }
 
     void OnSendEmotionEvent()
     {
         Debug.Log("Pressed E");
-        emotionModel.RaiseSoftEmotionEvent(e);
+        //emotionModel.RaiseSoftEmotionEvent(e);
+        EmotionModel.EmotionPulseSend.Invoke(e, false);
+    }
+
+    void OnInteract()
+    {
+        if (_interacting)
+        {
+            uiTextController.NextNode();
+            return;
+        }
+        Debug.Log("Raycasting");
+        
+        var layerMask = LayerMask.GetMask("Interaction");
+
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.up, 0.5f,
+            layerMask);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("Hit something: " + hit.collider.gameObject.name);
+            var interactable = hit.collider.GetComponentInParent<IInteractable>();
+            if (interactable != null) interactable.Interact(gameObject);
+        }
+        else
+        {
+            var sideDirection = Vector2.right;
+            if (_renderer.flipX) sideDirection = Vector2.left;
+            
+            hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), sideDirection, 0.5f,
+                layerMask);
+            if (hit.collider != null)
+            {
+                Debug.Log("Hit something: " + hit.collider.gameObject.name);
+                var interactable = hit.collider.GetComponentInParent<IInteractable>();
+                if (interactable != null) interactable.Interact(gameObject);
+            }
+        }
+    }
+
+    public void OnPause()
+    {
+        if (pauseMenu == null) return;
+        if (Menu.Paused)
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            Menu.Paused = false;
+        }
+        else
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+            Menu.Paused = true;
+        }
     }
 
     public void SwordAttack()
     {
+
         LockMovement();
 
-        if (_renderer.flipX == true)
+        if (_renderer.flipX)
         {
             swordAttack.AttackLeft();
         } else
@@ -124,14 +192,28 @@ public class PlayerInputController : MonoBehaviour
         swordAttack.StopAttack();
     }
 
-    public void LockMovement()
+    private void LockMovement()
     {
+        Debug.Log("Locking Movement");
         _canMove = false;
     }
 
-    public void UnlockMovement()
+    private void UnlockMovement()
     {
+        Debug.Log("Unlocking Movement");
         _canMove = true;
+    }
+
+    public void LockForInteraction()
+    {
+        _interacting = true;
+        LockMovement();
+    }
+
+    public void UnlockForInteraction()
+    {
+        _interacting = false;
+        UnlockMovement();
     }
 
 }

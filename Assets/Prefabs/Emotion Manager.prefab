@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8576379441137980691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1884052918296003647}
+  - component: {fileID: 8120227785539391591}
+  - component: {fileID: 8643757545133971681}
+  - component: {fileID: 6189849365435386172}
+  - component: {fileID: 7413346391295500774}
+  m_Layer: 0
+  m_Name: Emotion Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1884052918296003647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576379441137980691}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 824.6883, y: 183.50043, z: 6.0252676}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8120227785539391591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576379441137980691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505dd1f068f064141ade767a4e6216f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emotionState: {fileID: 11400000, guid: 09234329b58050e4291d76e2bc038abf, type: 2}
+  personality: {fileID: 8643757545133971681}
+  mood: {fileID: 6189849365435386172}
+--- !u!114 &8643757545133971681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576379441137980691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4addadf655675643beea5c4266eb99e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joyProneness: 0
+  sadnessProneness: 0
+  angerProneness: 0
+  fearProneness: 0
+  surpriseProneness: 0
+  prideProneness: 0
+  goals: []
+  magicnumber: 0.5
+--- !u!114 &6189849365435386172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576379441137980691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd8ddda4b0ada94284373d3a2ea72ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMood: {fileID: 0}
+  impactOnEmotion: 0.1
+  impactOnMood: 0.5
+--- !u!114 &7413346391295500774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576379441137980691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2920c4677dec6d64f82d8c9fd62a0b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

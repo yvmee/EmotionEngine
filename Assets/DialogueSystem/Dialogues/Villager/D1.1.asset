@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e323e53c3bde6a747874f47c844aa668, type: 3}
+  m_Name: D1.1
+  m_EditorClassIdentifier: 
+  _dialogueLine: {fileID: 11400000, guid: d34c904208bfd6047b73a8bf7abe24a7, type: 2}
+  choices:
+  - choicePreview: Arcane Shard
+    choiceNode: {fileID: 11400000, guid: 3f3b11a7a9e309a4788cf11efac655cb, type: 2}
+    emotionPulse: {fileID: 0}
+    hardEmotion: 0
+  - choicePreview: Meet new people
+    choiceNode: {fileID: 11400000, guid: e649bcc6ffc0e6443b35b0c0787806f2, type: 2}
+    emotionPulse: {fileID: 0}
+    hardEmotion: 0
+  - choicePreview: Not sure
+    choiceNode: {fileID: 11400000, guid: 3caff3ecaa1a73c409ff0820757f159a, type: 2}
+    emotionPulse: {fileID: 0}
+    hardEmotion: 0

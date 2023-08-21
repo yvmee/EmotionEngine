@@ -51,15 +51,10 @@ public class DialogueSequencer
         }
     }
     
-    private bool CanStartNode(DialogueNode node)
-    {
-        return (_currentNode == null || node == null || _currentNode.CanBeFollowedByNode(node));
-    }
 
     public void StartDialogueNode(DialogueNode node)
     {
-        if (CanStartNode(node))
-        {
+
             StopDialogueNode(_currentNode);
 
             _currentNode = node;
@@ -72,11 +67,7 @@ public class DialogueSequencer
             {
                 EndDialogue(_currentDialogue);
             }
-        }
-        else
-        {
-            throw new DialogueException("Failed to start dialogue node.");
-        }
+
     }
     
     private void StopDialogueNode(DialogueNode node)

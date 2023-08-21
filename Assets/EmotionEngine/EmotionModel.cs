@@ -13,6 +13,8 @@ namespace EmotionEngine
     }
     [Serializable]
     public class EmotionChangedEvent : UnityEvent <IEmotion> {}
+    [Serializable]
+    public class EmotionPulse : UnityEvent <IEmotion, bool> {}
     public class EmotionModel : MonoBehaviour
     {
         private IEmotion _emotionState;
@@ -21,10 +23,10 @@ namespace EmotionEngine
         [SerializeField] private Mood mood;
 
         public static EmotionChangedEvent EmotionStateChanged = new(); 
+        public static EmotionPulse EmotionPulseSend = new(); 
 
         void Awake()
         {
-
             if (emotionState != null && emotionState is IEmotion iEmotion)
             {
                 _emotionState = iEmotion;
@@ -33,13 +35,19 @@ namespace EmotionEngine
             {
                 throw new EmotionEngineException("Initial emotion state must implement IEmotion!");
             }
-            EmotionStateChanged.AddListener(DebugEvent);
+            EmotionPulseSend.AddListener(EmotionEvent);
         }
 
         private void FixedUpdate()
         {
             _emotionState.Decay();
             EmotionStateChanged.Invoke(_emotionState);
+        }
+
+        public void EmotionEvent(IEmotion emotionEvent, bool hard)
+        {
+            if (hard) RaiseHardEmotionEvent(emotionEvent);
+            else RaiseSoftEmotionEvent(emotionEvent);
         }
 
         public void RaiseHardEmotionEvent(IEmotion emotionEvent)
@@ -64,7 +72,6 @@ namespace EmotionEngine
 
         public void DebugEvent(IEmotion e)
         {
-            Debug.Log("Unity Event");
             DiscreteEmotion disEmo = (DiscreteEmotion)e;
             Debug.Log(disEmo.GetEmotion(EmotionType.Sadness));
         }

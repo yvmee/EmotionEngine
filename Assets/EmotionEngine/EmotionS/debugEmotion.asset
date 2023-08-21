@@ -15,12 +15,13 @@ MonoBehaviour:
   Joy:
     intensity: 0
   Sadness:
-    intensity: 0.8
+    intensity: 0.64350855
   Anger:
-    intensity: 0.9
+    intensity: 0.304
   Fear:
     intensity: 0
   Surprise:
     intensity: 0
   Pride:
     intensity: 0
+  decayingFactor: 0.00001

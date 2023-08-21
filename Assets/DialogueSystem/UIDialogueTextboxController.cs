@@ -51,8 +51,6 @@ public class UIDialogueTextBoxController : MonoBehaviour, DialogueNodeVisitor
 
         dialogueText.text = node.DialogueLine.Text;
         speakerText.text = node.DialogueLine.Speaker.CharacterName;
-
-        node.Accept(this);
     }
 
     private void OnDialogueNodeEnd(DialogueNode node)
@@ -87,4 +85,6 @@ public class UIDialogueTextBoxController : MonoBehaviour, DialogueNodeVisitor
             newChoice.Choice = choice;
         }
     }
+    
+    
 }

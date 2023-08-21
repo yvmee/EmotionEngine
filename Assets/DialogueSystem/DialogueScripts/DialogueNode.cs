@@ -4,11 +4,10 @@ using UnityEngine;
 
 public abstract class DialogueNode : ScriptableObject
 {
-    [SerializeField]
-    private NarrationLine _dialogueLine;
+    [SerializeField] private NarrationLine _dialogueLine;
 
     public NarrationLine DialogueLine => _dialogueLine;
 
-    public abstract bool CanBeFollowedByNode(DialogueNode node);
-    public abstract void Accept(DialogueNodeVisitor visitor);
+    //public abstract bool CanBeFollowedByNode(DialogueNode node);
+    //public abstract void Accept(DialogueNodeVisitor visitor);
 }
