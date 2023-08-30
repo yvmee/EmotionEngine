@@ -29,13 +29,7 @@ public class PlayerInputController : MonoBehaviour
     public GameObject pauseMenu;
 
     private EmotionModel _emotionModel;
-    public DiscreteEmotion e;
-    
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
+    public EmotionEvent e;
 
     // Start is called before the first frame update
     void Start()
@@ -116,7 +110,7 @@ public class PlayerInputController : MonoBehaviour
     {
         Debug.Log("Pressed E");
         //emotionModel.RaiseSoftEmotionEvent(e);
-        EmotionModel.EmotionPulseSend.Invoke(e, false);
+        EmotionModel.EmotionStimulusEvent.Invoke(e, false);
     }
 
     void OnInteract()

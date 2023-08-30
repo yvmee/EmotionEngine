@@ -21,10 +21,9 @@ public class EmotionTree : MonoBehaviour
         EmotionModel.EmotionStateChanged.AddListener(ChangeAsset);
     }
 
-    private void ChangeAsset(IEmotion ie)
+    private void ChangeAsset(DiscreteEmotion emotion)
     {
-        var emotion = (DiscreteEmotion) ie;
-        var strongest = new Emotion(EmotionType.Joy);
+        var strongest = new EmotionVariable(EmotionType.Joy);
         foreach (var e in emotion.GetEmotions())
         {
             if (e.Intensity >= strongest.Intensity) strongest = e;

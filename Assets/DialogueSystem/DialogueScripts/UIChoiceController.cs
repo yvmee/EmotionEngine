@@ -13,9 +13,9 @@ public class UIChoiceController : MonoBehaviour
     private UITextController uiText;
     
     private DialogueNode _choiceNextNode;
-    private DiscreteEmotion _emotion;
+    private EmotionEvent _emotion;
     private bool _hardEmotion;
-    private string[] _affectedStates;
+    private PersonalityEvent _personalityEvent;
 
     public DialogueChoice Choice
     {
@@ -23,9 +23,9 @@ public class UIChoiceController : MonoBehaviour
         {
             choice.text = value.ChoicePreview;
             _choiceNextNode = value.ChoiceNode;
-            _emotion = value.EmotionPulse;
+            _emotion = value.EmotionEvent;
             _hardEmotion = value.HardEmotion;
-            _affectedStates = value.AffectedStates;
+            _personalityEvent = value.PersonalityEvent;
         }
     }
 
@@ -42,8 +42,17 @@ public class UIChoiceController : MonoBehaviour
     private void OnClick()
     {
         uiText.DeactivateChoices();
-        if (_emotion != null) EmotionModel.EmotionPulseSend.Invoke(_emotion, _hardEmotion);
-        uiText.CheckQuests(_affectedStates);
+        if (_emotion != null) 
+            SendEmotionEvent();
+        if (_personalityEvent != null)
+            EmotionModel.SetPersonalityEvent.Invoke(_personalityEvent);
         uiText.Visit(_choiceNextNode);
+    }
+    
+    private void SendEmotionEvent()
+    {
+        var e = Instantiate(_emotion);
+        e.emotion = Instantiate(_emotion.emotion);
+        EmotionModel.EmotionStimulusEvent.Invoke(e, _hardEmotion);
     }
 }

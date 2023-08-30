@@ -16,13 +16,16 @@ MonoBehaviour:
   choices:
   - choicePreview: Arcane Shard
     choiceNode: {fileID: 11400000, guid: 3f3b11a7a9e309a4788cf11efac655cb, type: 2}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 11400000, guid: 0659f42a13b908e499d173b4c6e9382f, type: 2}
     hardEmotion: 0
+    personalityEvent: {fileID: 0}
   - choicePreview: Meet new people
     choiceNode: {fileID: 11400000, guid: e649bcc6ffc0e6443b35b0c0787806f2, type: 2}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 11400000, guid: 401ff5ba61ac53f47853e63a6a48c291, type: 2}
     hardEmotion: 0
+    personalityEvent: {fileID: 0}
   - choicePreview: Not sure
     choiceNode: {fileID: 11400000, guid: 3caff3ecaa1a73c409ff0820757f159a, type: 2}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 0}
     hardEmotion: 0
+    personalityEvent: {fileID: 0}

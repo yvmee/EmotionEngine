@@ -8,13 +8,11 @@ namespace EmotionEngine
     [Serializable]
     public class Goal
     {
-        [SerializeField]
-        private string tag;
-        [SerializeField]
-        private Emotion emotionImpact;
+        [SerializeField] private string tag;
+        [SerializeField] private EmotionVariable emotionVariableImpact;
 
         public string Tag => tag;
-        public Emotion Emotion => emotionImpact;
+        public EmotionVariable EmotionVariable => emotionVariableImpact;
     }
     public class PersonalityModel : MonoBehaviour, IPersonality
     {
@@ -26,14 +24,46 @@ namespace EmotionEngine
         [SerializeField] private float surpriseProneness;
         [SerializeField] private float prideProneness;
 
-        [SerializeField] private Goal[] goals;
+        [SerializeField] private List<Goal> goals;
+        private Dictionary<string, EmotionVariable> _goals = new Dictionary<string, EmotionVariable>();
 
         [SerializeField] private float magicnumber = 0.5f;
-        
-        public IEmotion ProcessEmotion(IEmotion emotionEvent)
+
+        private void Awake()
         {
-            Debug.Log("Personality Calculation");
-            var emotion = (DiscreteEmotion)emotionEvent;
+            foreach (var goal in goals)
+            {
+                _goals.Add(goal.Tag, goal.EmotionVariable);
+            }
+        }
+
+        public DiscreteEmotion ProcessEmotion(EmotionEvent emotionEvent)
+        {
+            var emotion = emotionEvent.emotion;
+            
+            // process Goals
+            foreach (var goalAlignment in emotionEvent.goalAlignments)
+            {
+                if (!_goals.ContainsKey(goalAlignment.tag)) break;
+                
+                var effect = _goals[goalAlignment.tag];
+                if (goalAlignment.alignment)
+                {
+                    emotion.GetEmotion(effect.Type).Intensity += effect.Intensity;
+                    emotion.GetEmotion(EmotionType.Sadness).Intensity -= effect.Intensity/5 * 2;
+                    emotion.GetEmotion(EmotionType.Anger).Intensity -= effect.Intensity/5 * 2;
+                    emotion.GetEmotion(EmotionType.Fear).Intensity -= effect.Intensity/5;
+                }
+                
+                else
+                {
+                    emotion.GetEmotion(EmotionType.Sadness).Intensity += effect.Intensity/5 * 2;
+                    emotion.GetEmotion(EmotionType.Anger).Intensity += effect.Intensity/5 * 2;
+                    emotion.GetEmotion(EmotionType.Fear).Intensity += effect.Intensity/5;
+                }
+            }
+            
+            // process emotion variables
             foreach (var e in emotion.GetEmotions())
             {
                 float proneness = e.Type switch
@@ -50,7 +80,43 @@ namespace EmotionEngine
             }
             
             
-            return emotionEvent;
+            return emotionEvent.emotion;
+        }
+
+        public void SetPersonality(PersonalityEvent personalityEvent)
+        {
+            DiscreteEmotion emotion = personalityEvent.proneness;
+            if (emotion != null)
+            {
+                if (personalityEvent.proneness.GetEmotion(EmotionType.Joy).Intensity > 0)
+                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Joy).Intensity) /
+                                   2;
+                if (personalityEvent.proneness.GetEmotion(EmotionType.Sadness).Intensity > 0)
+                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Sadness).Intensity) /
+                                   2;
+                if (personalityEvent.proneness.GetEmotion(EmotionType.Anger).Intensity > 0)
+                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Anger).Intensity) /
+                                   2;
+                if (personalityEvent.proneness.GetEmotion(EmotionType.Fear).Intensity > 0)
+                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Fear).Intensity) /
+                                   2;
+                if (personalityEvent.proneness.GetEmotion(EmotionType.Surprise).Intensity > 0)
+                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Surprise).Intensity) /
+                                   2;
+                if (personalityEvent.proneness.GetEmotion(EmotionType.Pride).Intensity > 0)
+                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Pride).Intensity) /
+                                   2;
+            }
+
+            if (personalityEvent.goals != null)
+            {
+                foreach (var goal in personalityEvent.goals)
+                {
+                    _goals.Add(goal.Tag, goal.EmotionVariable);
+                    Debug.Log("Goal added: " + goal.Tag);
+                }
+            }
+            
         }
     }
 }

@@ -12,16 +12,16 @@ public class DialogueChoice
     [SerializeField]  private string choicePreview;
     [SerializeField] private DialogueNode choiceNode;
 
-    [SerializeField] private DiscreteEmotion emotionPulse;
+    [SerializeField] private EmotionEvent emotionEvent;
     [SerializeField] private bool hardEmotion = false;
-    
-    [SerializeField] private string[] _affectedStates;
+    [SerializeField] private PersonalityEvent personalityEvent;
 
     public string ChoicePreview => choicePreview;
     public DialogueNode ChoiceNode => choiceNode;
-    public DiscreteEmotion EmotionPulse => emotionPulse;
+    public EmotionEvent EmotionEvent => emotionEvent;
     public bool HardEmotion => hardEmotion;
-    public string[] AffectedStates => _affectedStates;
+    public PersonalityEvent PersonalityEvent => personalityEvent;
+
 }
 
 

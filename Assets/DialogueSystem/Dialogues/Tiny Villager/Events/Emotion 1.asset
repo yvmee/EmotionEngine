@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83fd42c2505e2a64eb6e000a59992c09, type: 3}
+  m_Name: Emotion 1
+  m_EditorClassIdentifier: 
+  Joy:
+    type: 0
+    intensity: 0
+  Sadness:
+    type: 1
+    intensity: 0
+  Anger:
+    type: 2
+    intensity: 0
+  Fear:
+    type: 3
+    intensity: 0.2
+  Surprise:
+    type: 4
+    intensity: 0
+  Pride:
+    type: 5
+    intensity: 0
+  decayingFactor: 0.00001

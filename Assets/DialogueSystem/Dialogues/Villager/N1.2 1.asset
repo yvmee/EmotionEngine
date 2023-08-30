@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: N1.2 1
   m_EditorClassIdentifier: 
   _speaker: {fileID: 11400000, guid: 4fc58a1706fe3af43aaa8ce80acb5503, type: 2}
-  _text: What brings you here?
+  _text: Is that why you just walked into my house? A bit rude don't you think?

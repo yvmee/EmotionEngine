@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EmotionEngine;
 using TMPro;
 using UnityEngine;
 
@@ -123,11 +124,8 @@ public class UITextController : MonoBehaviour
         _inChoice = false;
     }
 
-    public void CheckQuests(string[] affectedQuests)
+    public void SetPersonality(PersonalityEvent personalityEvent)
     {
-        foreach (var quest in affectedQuests)
-        {
-            _sideQuest.TrySetQuest(quest);
-        }
+        
     }
 }

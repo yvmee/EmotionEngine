@@ -7,7 +7,8 @@ namespace EmotionEngine
 {
     public interface IPersonality
     {
-        public IEmotion ProcessEmotion(IEmotion emotionEvent);
+        public DiscreteEmotion ProcessEmotion(EmotionEvent emotionEvent);
+        public void SetPersonality(PersonalityEvent personalityEvent);
     }
 }
 

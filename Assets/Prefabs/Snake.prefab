@@ -181,5 +181,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7580322d0546d4044b071998a19dd1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotion: {fileID: 0}
+  emotion: {fileID: 11400000, guid: 0f6d341e10a314c4aa875def7d4d83ae, type: 2}
   hardEmotion: 0

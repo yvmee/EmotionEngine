@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e323e53c3bde6a747874f47c844aa668, type: 3}
+  m_Name: D3.0
+  m_EditorClassIdentifier: 
+  _dialogueLine: {fileID: 11400000, guid: 88344e1deaa1a9c4cbe0b053de575922, type: 2}
+  choices:
+  - choicePreview: Investigate
+    choiceNode: {fileID: 11400000, guid: a6b6a24ce52e172489c62098fde7daaa, type: 2}
+    emotionEvent: {fileID: 11400000, guid: d3fbf4661dd4bab4f814e5a11f0f9952, type: 2}
+    hardEmotion: 0
+    personalityEvent: {fileID: 0}
+  - choicePreview: Leave it
+    choiceNode: {fileID: 0}
+    emotionEvent: {fileID: 11400000, guid: 525f4b1e3f0061c4caeb6f02d1dd75ef, type: 2}
+    hardEmotion: 0
+    personalityEvent: {fileID: 0}

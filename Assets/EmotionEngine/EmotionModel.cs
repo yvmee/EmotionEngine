@@ -12,30 +12,26 @@ namespace EmotionEngine
         }
     }
     [Serializable]
-    public class EmotionChangedEvent : UnityEvent <IEmotion> {}
+    public class EmotionChangedEvent : UnityEvent <DiscreteEmotion> {}
     [Serializable]
-    public class EmotionPulse : UnityEvent <IEmotion, bool> {}
+    public class EmotionStimulus : UnityEvent <EmotionEvent, bool> {}
+    [Serializable]
+    public class SetPersonality : UnityEvent <PersonalityEvent> {}
     public class EmotionModel : MonoBehaviour
     {
-        private IEmotion _emotionState;
-        [SerializeField] private ScriptableObject emotionState;
+        private DiscreteEmotion _emotionState;
         [SerializeField] private PersonalityModel personality;
-        [SerializeField] private Mood mood;
-
+        [SerializeField] private MoodModel moodModel;
+        
         public static EmotionChangedEvent EmotionStateChanged = new(); 
-        public static EmotionPulse EmotionPulseSend = new(); 
-
+        public static EmotionStimulus EmotionStimulusEvent = new();
+        public static SetPersonality SetPersonalityEvent = new();
+    
         void Awake()
         {
-            if (emotionState != null && emotionState is IEmotion iEmotion)
-            {
-                _emotionState = iEmotion;
-            }
-            else
-            {
-                throw new EmotionEngineException("Initial emotion state must implement IEmotion!");
-            }
-            EmotionPulseSend.AddListener(EmotionEvent);
+            _emotionState = ScriptableObject.CreateInstance<DiscreteEmotion>();
+            EmotionStimulusEvent.AddListener(EmotionStimulus);
+            SetPersonalityEvent.AddListener(ProcessPersonalityEvent);
         }
 
         private void FixedUpdate()
@@ -44,36 +40,56 @@ namespace EmotionEngine
             EmotionStateChanged.Invoke(_emotionState);
         }
 
-        public void EmotionEvent(IEmotion emotionEvent, bool hard)
+        public void ProcessPersonalityEvent(PersonalityEvent personalityEvent)
         {
-            if (hard) RaiseHardEmotionEvent(emotionEvent);
-            else RaiseSoftEmotionEvent(emotionEvent);
+            personality.SetPersonality(personalityEvent);
         }
 
-        public void RaiseHardEmotionEvent(IEmotion emotionEvent)
+        public void EmotionStimulus(EmotionEvent emotionStimulus, bool hard)
         {
-            _emotionState = emotionEvent;
+            Debug.Log("Emotion Event raised: " + emotionStimulus.emotion.name);
+            Debug.Log(emotionStimulus.emotion.GetEmotions());
+            
+            if (hard) RaiseHardEmotionEvent(emotionStimulus);
+            else RaiseSoftEmotionEvent(emotionStimulus);
+        }
+
+        public void RaiseHardEmotionEvent(EmotionEvent emotionEvent)
+        {
+            foreach (var e in _emotionState.GetEmotions())
+            {
+                e.Intensity = emotionEvent.emotion.GetEmotion(e.Type).Intensity;
+            }
             EmotionStateChanged.Invoke(_emotionState);
         }
         
-        public void RaiseSoftEmotionEvent(IEmotion emotionEvent)
+        public void RaiseSoftEmotionEvent(EmotionEvent emotionEvent)
         {
-            Debug.Log("Emotion Event raised!");
-            
-            IEmotion emo = personality.ProcessEmotion(emotionEvent);
-            _emotionState = mood.ProcessEmotion(emo);
+            DiscreteEmotion emotion = personality.ProcessEmotion(emotionEvent);
+            emotion = moodModel.ProcessEmotion(emotion);
+            SetNewState(emotion);
             EmotionStateChanged.Invoke(_emotionState);
         }
 
-        public IEmotion GetCurrentState()
+        private void SetNewState(DiscreteEmotion emotion)
         {
-            return _emotionState;
+            _emotionState.GetEmotion(EmotionType.Joy).Intensity =
+                Math.Min(Math.Max((_emotionState.GetEmotion(EmotionType.Joy).Intensity + emotion.GetEmotion(EmotionType.Joy).Intensity), 0f), 1f);
+            _emotionState.GetEmotion(EmotionType.Sadness).Intensity =
+                Math.Min(Math.Max((_emotionState.GetEmotion(EmotionType.Sadness).Intensity + emotion.GetEmotion(EmotionType.Sadness).Intensity), 0f), 1f);
+            _emotionState.GetEmotion(EmotionType.Anger).Intensity =
+                Math.Min(Math.Max((_emotionState.GetEmotion(EmotionType.Anger).Intensity + emotion.GetEmotion(EmotionType.Anger).Intensity), 0f), 1f);
+            _emotionState.GetEmotion(EmotionType.Fear).Intensity =
+                Math.Min(Math.Max((_emotionState.GetEmotion(EmotionType.Fear).Intensity + emotion.GetEmotion(EmotionType.Fear).Intensity), 0f), 1f);
+            _emotionState.GetEmotion(EmotionType.Surprise).Intensity =
+                Math.Min(Math.Max((_emotionState.GetEmotion(EmotionType.Surprise).Intensity + emotion.GetEmotion(EmotionType.Surprise).Intensity), 0f), 1f);
+            _emotionState.GetEmotion(EmotionType.Pride).Intensity =
+                Math.Min(Math.Max((_emotionState.GetEmotion(EmotionType.Pride).Intensity + emotion.GetEmotion(EmotionType.Pride).Intensity), 0f), 1f);
         }
 
-        public void DebugEvent(IEmotion e)
+        public void DebugEvent(DiscreteEmotion e)
         {
-            DiscreteEmotion disEmo = (DiscreteEmotion)e;
-            Debug.Log(disEmo.GetEmotion(EmotionType.Sadness));
+            Debug.Log(e.GetEmotion(EmotionType.Sadness));
         }
     }
 }

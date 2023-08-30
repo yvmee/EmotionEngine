@@ -18,14 +18,14 @@ namespace EmotionEngine
     }
     
     [Serializable]
-    public class Emotion
+    public class EmotionVariable
     {
-        public Emotion(EmotionType type)
+        public EmotionVariable(EmotionType type)
         {
             this.type = type;
         }
         
-        //[SerializeField]
+        [SerializeField]
         private EmotionType type;
         [SerializeField]
         [Range(0.0f, 1.0f)]
@@ -40,23 +40,35 @@ namespace EmotionEngine
     }
     
     [CreateAssetMenu(menuName = "Scriptable Objects/EmotionEngine/DiscreteEmotion")]
-    public class DiscreteEmotion : ScriptableObject, IEmotion
+    public class DiscreteEmotion : ScriptableObject
     {
-        [field: SerializeField] private Emotion Joy = new Emotion(EmotionType.Joy);
-        [field: SerializeField] private Emotion Sadness = new Emotion(EmotionType.Sadness);
-        [field: SerializeField] private Emotion Anger = new Emotion(EmotionType.Anger);
-        [field: SerializeField] private Emotion Fear = new Emotion(EmotionType.Fear);
-        [field: SerializeField] private Emotion Surprise = new Emotion(EmotionType.Surprise);
-        [field: SerializeField] private Emotion Pride = new Emotion(EmotionType.Pride);
+        [field: SerializeField] private EmotionVariable Joy = new EmotionVariable(EmotionType.Joy);
+        [field: SerializeField] private EmotionVariable Sadness = new EmotionVariable(EmotionType.Sadness);
+        [field: SerializeField] private EmotionVariable Anger = new EmotionVariable(EmotionType.Anger);
+        [field: SerializeField] private EmotionVariable Fear = new EmotionVariable(EmotionType.Fear);
+        [field: SerializeField] private EmotionVariable Surprise = new EmotionVariable(EmotionType.Surprise);
+        [field: SerializeField] private EmotionVariable Pride = new EmotionVariable(EmotionType.Pride);
 
         [SerializeField] private float decayingFactor = 0.00001f;
-
-        public List<Emotion> GetEmotions()
+        
+        public void Decay()
         {
-            return new List<Emotion>() { Joy, Sadness, Anger, Fear, Surprise, Pride };
+            foreach (var e in GetEmotions())
+            {
+                e.Intensity -= e.Intensity * decayingFactor;
+            }
+        }
+        
+        
+        
+        
+
+        public List<EmotionVariable> GetEmotions()
+        {
+            return new List<EmotionVariable>() { Joy, Sadness, Anger, Fear, Surprise, Pride };
         }
 
-        public Emotion GetEmotion(EmotionType type)
+        public EmotionVariable GetEmotion(EmotionType type)
         {
             switch (type)
             {
@@ -77,12 +89,6 @@ namespace EmotionEngine
             }
         }
 
-        public void Decay()
-        {
-            foreach (var e in GetEmotions())
-            {
-                e.Intensity -= e.Intensity * decayingFactor;
-            }
-        }
+        
     }
 }

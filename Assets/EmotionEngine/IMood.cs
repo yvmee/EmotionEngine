@@ -2,7 +2,7 @@ namespace EmotionEngine
 {
     public interface IMood
     {
-        public IEmotion ProcessEmotion(IEmotion emotionEvent);
-        public IEmotion GetCurrentMood();
+        public DiscreteEmotion ProcessEmotion(DiscreteEmotion emotionEvent);
+        public DiscreteEmotion GetCurrentMood();
     }
 }

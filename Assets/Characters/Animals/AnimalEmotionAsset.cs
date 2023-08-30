@@ -15,11 +15,10 @@ public class AnimalEmotionAsset : EmotionAsset
         _animal = GetComponent<Animal>();
     }
 
-    protected override void ChangeAsset(IEmotion emotion)
+    protected override void ChangeAsset(DiscreteEmotion emotion)
     {
-        var discreteEmotion = (DiscreteEmotion) emotion;
-        var strongest = new Emotion(EmotionType.Joy);
-        foreach (var e in discreteEmotion.GetEmotions().Where(e => e.Intensity >= strongest.Intensity))
+        var strongest = new EmotionVariable(EmotionType.Joy);
+        foreach (var e in emotion.GetEmotions().Where(e => e.Intensity >= strongest.Intensity))
         {
             strongest = e;
         }

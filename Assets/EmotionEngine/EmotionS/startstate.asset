@@ -13,14 +13,21 @@ MonoBehaviour:
   m_Name: startstate
   m_EditorClassIdentifier: 
   Joy:
+    type: 0
     intensity: 0
   Sadness:
+    type: 1
     intensity: 0
   Anger:
+    type: 2
     intensity: 0
   Fear:
+    type: 3
     intensity: 0
   Surprise:
+    type: 4
     intensity: 0
   Pride:
+    type: 5
     intensity: 0
+  decayingFactor: 0.00001

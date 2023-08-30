@@ -16,13 +16,16 @@ MonoBehaviour:
   choices:
   - choicePreview: Money
     choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 0}
     hardEmotion: 0
-  - choicePreview: I'm here to help
+    personalityEvent: {fileID: 11400000, guid: f2cfc15efa9be3649b06d1193220171e, type: 2}
+  - choicePreview: Defeat the Enemies
     choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 0}
     hardEmotion: 0
+    personalityEvent: {fileID: 11400000, guid: ed7a8a27a36de8d4c853e3fa2dfc6ac3, type: 2}
   - choicePreview: A fun adventure
     choiceNode: {fileID: 11400000, guid: fe7764b73569d8a47b24e77a2280122f, type: 2}
-    emotionPulse: {fileID: 11400000, guid: 901c27fa03082964c9b5ca8217015ed9, type: 2}
+    emotionEvent: {fileID: 0}
     hardEmotion: 0
+    personalityEvent: {fileID: 11400000, guid: c6fbf7e0cea26d145b104050962a39a3, type: 2}

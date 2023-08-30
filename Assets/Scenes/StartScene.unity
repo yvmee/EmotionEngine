@@ -183,7 +183,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8627707300520903980, guid: 90703ffae4532894499aeb4ca81c01f9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -864,6 +865,10 @@ PrefabInstance:
     - target: {fileID: 8576379441137980691, guid: 5e47e57fc7a27e34b8a21d976ed33cfc, type: 3}
       propertyPath: m_Name
       value: Emotion Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576379441137980691, guid: 5e47e57fc7a27e34b8a21d976ed33cfc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

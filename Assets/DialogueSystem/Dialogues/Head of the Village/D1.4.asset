@@ -16,13 +16,16 @@ MonoBehaviour:
   choices:
   - choicePreview: You can trust me
     choiceNode: {fileID: 0}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 11400000, guid: df69c3cceb4c9a443a26f3cb97ab69c3, type: 2}
     hardEmotion: 0
+    personalityEvent: {fileID: 0}
   - choicePreview: I am unbeatable
     choiceNode: {fileID: 0}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 11400000, guid: 08cd177a5c30c01418a5adca9b82c01c, type: 2}
     hardEmotion: 0
+    personalityEvent: {fileID: 0}
   - choicePreview: Say nothing
     choiceNode: {fileID: 0}
-    emotionPulse: {fileID: 0}
+    emotionEvent: {fileID: 0}
     hardEmotion: 0
+    personalityEvent: {fileID: 0}

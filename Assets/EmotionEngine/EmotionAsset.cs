@@ -11,7 +11,7 @@ namespace EmotionEngine
             EmotionModel.EmotionStateChanged.AddListener(ChangeAsset);
         }
 
-        protected abstract void ChangeAsset(IEmotion emotion);
+        protected abstract void ChangeAsset(DiscreteEmotion emotion);
 
     }
 }
