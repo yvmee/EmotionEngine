@@ -7,7 +7,6 @@ public class Enemy : MonoBehaviour
 {
     public EmotionEvent emotion;
     public bool hardEmotion;
-    private bool _dead;
     public float Health
     {
         set
@@ -23,7 +22,6 @@ public class Enemy : MonoBehaviour
 
     private void Defeated()
     {
-        _dead = true;
         if (emotion != null) EmotionModel.EmotionStimulusEvent.Invoke(emotion, hardEmotion);
         Destroy(gameObject);
     }
