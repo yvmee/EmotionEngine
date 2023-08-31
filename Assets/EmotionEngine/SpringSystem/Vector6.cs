@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace EmotionEngine
 {
+    [Serializable]
     public class Vector6
     {
         public double x;

@@ -22,6 +22,10 @@ namespace EmotionEngine
         private DiscreteEmotion _emotionState;
         [SerializeField] private PersonalityModel personality;
         [SerializeField] private MoodModel moodModel;
+
+        [SerializeField] private SpringModel springModel;
+        public bool useSpringModel;
+        
         
         public static EmotionChangedEvent EmotionStateChanged = new(); 
         public static EmotionStimulus EmotionStimulusEvent = new();
@@ -50,6 +54,7 @@ namespace EmotionEngine
             Debug.Log("Emotion Event raised: " + emotionStimulus.emotion.name);
             Debug.Log(emotionStimulus.emotion.GetEmotions());
             
+            
             if (hard) RaiseHardEmotionEvent(emotionStimulus);
             else RaiseSoftEmotionEvent(emotionStimulus);
         }
@@ -65,6 +70,7 @@ namespace EmotionEngine
         
         public void RaiseSoftEmotionEvent(EmotionEvent emotionEvent)
         {
+
             DiscreteEmotion emotion = personality.ProcessEmotion(emotionEvent);
             emotion = moodModel.ProcessEmotion(emotion);
             SetNewState(emotion);

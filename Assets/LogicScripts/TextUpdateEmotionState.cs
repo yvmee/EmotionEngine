@@ -25,14 +25,18 @@ public class TextUpdateEmotionState : MonoBehaviour
     private string DisplayEmotion(DiscreteEmotion e)
     {
         var sb = new StringBuilder();
+        var strongestEmotion = e.GetEmotion(EmotionType.Joy);
         foreach (var emotion in e.GetEmotions())
         {
+            if (emotion.Intensity >= strongestEmotion.Intensity)
+                strongestEmotion = emotion;
             sb.Append(emotion.Type);
             sb.Append(": ");
             sb.Append(emotion.Intensity);
             sb.Append('\n');
         }
+        sb.Append("Current Emotion: ");
+        sb.Append(strongestEmotion.Type);
         return sb.ToString();
     }
-
 }

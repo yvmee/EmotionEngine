@@ -11,5 +11,6 @@ namespace EmotionEngine
         public double dr; // restlength
         public SpringNode node0;
         public SpringNode node1;
+        public bool freeze;
     }
 }
