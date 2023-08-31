@@ -15,6 +15,6 @@ MonoBehaviour:
   proneness: {fileID: 0}
   goals:
   - tag: Defeat enemies
-    emotionImpact:
+    emotionVariableImpact:
       type: 0
       intensity: 0.2
