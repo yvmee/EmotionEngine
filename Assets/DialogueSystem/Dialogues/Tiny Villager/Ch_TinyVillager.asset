@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4892783578c17c649bf5e2e8c94cbd4d, type: 3}
   m_Name: Ch_TinyVillager
   m_EditorClassIdentifier: 
-  _characterName: 
+  _characterName: Tiny Villager

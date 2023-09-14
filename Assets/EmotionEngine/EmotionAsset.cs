@@ -6,12 +6,13 @@ namespace EmotionEngine
 {
     public abstract class EmotionAsset : MonoBehaviour
     {
+        public float threshold;
         protected void Awake()
         {
-            EmotionModel.EmotionStateChanged.AddListener(ChangeAsset);
+            EmotionEngine.EmotionStateChanged.AddListener(ChangeAsset);
         }
 
-        protected abstract void ChangeAsset(DiscreteEmotion emotion);
+        protected abstract void ChangeAsset(EmotionState emotionState);
 
     }
 }

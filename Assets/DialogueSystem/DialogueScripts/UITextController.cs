@@ -17,7 +17,6 @@ public class UITextController : MonoBehaviour
 
     private bool _inChoice = false;
     private DialogueNode _nextNode = null;
-    private SideQuest _sideQuest;
 
     private PlayerInputController _playerInputController;
 
@@ -30,12 +29,11 @@ public class UITextController : MonoBehaviour
         FindObjectOfType<PlayerInputController>().uiTextController = this;
     }
 
-    private void OnDialogueNodeStart(DialogueNode node, SideQuest sideQuest)
+    private void OnDialogueNodeStart(DialogueNode node)
     {
         _playerInputController.LockForInteraction();
         
         gameObject.SetActive(true);
-        _sideQuest = sideQuest;
         Visit(node);
     }
 

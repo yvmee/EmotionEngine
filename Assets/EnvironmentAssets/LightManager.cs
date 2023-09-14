@@ -17,18 +17,16 @@ public class LightManager : EmotionAsset
     public Color surpriseColor;
     public Color prideColor;
 
-    public float treshold = 0.2f;
-    
-    protected override void ChangeAsset(DiscreteEmotion emotion)
+    protected override void ChangeAsset(EmotionState emotionState)
     {
         var strongest = new EmotionVariable(EmotionType.Joy);
         
-        foreach (var e in emotion.GetEmotions())
+        foreach (var e in emotionState.GetEmotions())
         {
             if (e.Intensity >= strongest.Intensity) strongest = e;
         }
         
-        if (strongest.Intensity <= treshold)
+        if (strongest.Intensity <= threshold)
         {
             foreach (var light2D in gameObject.GetComponentsInChildren<Light2D>())
                 light2D.color = neutralColor;

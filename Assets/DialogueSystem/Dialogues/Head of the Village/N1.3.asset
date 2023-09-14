@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: N1.3
   m_EditorClassIdentifier: 
   _speaker: {fileID: 11400000, guid: e529a7164569ec64ea7cfe73a507150e, type: 2}
-  _text: If the Arcane Shard even still exists... Not only has no one still alive
-    seen it. Barely any information has been passed on to our generation.
+  _text: If the Arcane Shard even still exists... Barely any information has been
+    passed on to our generation.

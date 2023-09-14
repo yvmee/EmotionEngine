@@ -12,7 +12,7 @@ public class SwordAttack : MonoBehaviour
     
     public int damage = 3;
 
-    public EmotionEvent emotionEvent;
+    [FormerlySerializedAs("emotionEvent")] public EmotionStimulus emotionStimulus;
 
     private Vector2 _rightAttackOffset;
     private void Start()
@@ -37,9 +37,9 @@ public class SwordAttack : MonoBehaviour
 
     private void SendEmotionEvent()
     {
-        var e = Instantiate(emotionEvent);
-        e.emotion = Instantiate(emotionEvent.emotion);
-        EmotionModel.EmotionStimulusEvent.Invoke(e, false);
+        var e = Instantiate(emotionStimulus);
+        e.emotionState = Instantiate(emotionStimulus.emotionState);
+        EmotionEngine.EmotionEngine.EmotionStimulusEvent.Invoke(e);
     }
 
     public void StopAttack()

@@ -18,13 +18,13 @@ public class EmotionTree : MonoBehaviour
 
     private void Awake()
     {
-        EmotionModel.EmotionStateChanged.AddListener(ChangeAsset);
+        EmotionEngine.EmotionEngine.EmotionStateChanged.AddListener(ChangeAsset);
     }
 
-    private void ChangeAsset(DiscreteEmotion emotion)
+    private void ChangeAsset(EmotionState emotionState)
     {
         var strongest = new EmotionVariable(EmotionType.Joy);
-        foreach (var e in emotion.GetEmotions())
+        foreach (var e in emotionState.GetEmotions())
         {
             if (e.Intensity >= strongest.Intensity) strongest = e;
         }

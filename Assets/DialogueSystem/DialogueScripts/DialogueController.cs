@@ -6,13 +6,12 @@ using UnityEngine.Events;
 
 public class DialogueController : MonoBehaviour
 {
-    public static UnityEvent<DialogueNode, SideQuest> DialogueStart = new();
+    public static UnityEvent<DialogueNode> DialogueStart = new();
     public static UnityEvent DialogueStop = new();
     public static UnityEvent NextNode;
 
-    public static void StartDialogue(DialogueObject obj, SideQuest sideQuest)
+    public static void StartDialogue(DialogueObject obj)
     {
-        Debug.Log("Start Dialogue");
-        DialogueStart.Invoke(obj.FirstNode, sideQuest);
+        DialogueStart.Invoke(obj.FirstNode);
     }
 }

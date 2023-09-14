@@ -16,16 +16,16 @@ MonoBehaviour:
   choices:
   - choicePreview: You can trust me
     choiceNode: {fileID: 0}
-    emotionEvent: {fileID: 11400000, guid: df69c3cceb4c9a443a26f3cb97ab69c3, type: 2}
+    emotionStimulus: {fileID: 11400000, guid: df69c3cceb4c9a443a26f3cb97ab69c3, type: 2}
     hardEmotion: 0
-    personalityEvent: {fileID: 0}
+    personalityEvent: {fileID: 11400000, guid: adf53c4e06611f24087a7fe4a73fe9d9, type: 2}
   - choicePreview: I am unbeatable
     choiceNode: {fileID: 0}
-    emotionEvent: {fileID: 11400000, guid: 08cd177a5c30c01418a5adca9b82c01c, type: 2}
+    emotionStimulus: {fileID: 11400000, guid: 08cd177a5c30c01418a5adca9b82c01c, type: 2}
     hardEmotion: 0
-    personalityEvent: {fileID: 0}
+    personalityEvent: {fileID: 11400000, guid: f2adc50e273521d43b79537f6664fd28, type: 2}
   - choicePreview: Say nothing
     choiceNode: {fileID: 0}
-    emotionEvent: {fileID: 0}
+    emotionStimulus: {fileID: 0}
     hardEmotion: 0
     personalityEvent: {fileID: 0}

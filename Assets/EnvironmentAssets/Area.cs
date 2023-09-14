@@ -3,21 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using EmotionEngine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Area : MonoBehaviour
 {
-    public EmotionEvent emotionEvent;
+    [FormerlySerializedAs("emotionEvent")] public EmotionStimulus emotionStimulus;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Player"))
-            EmotionModel.EmotionStimulusEvent.Invoke(emotionEvent, false);
+            EmotionEngine.EmotionEngine.EmotionStimulusEvent.Invoke(emotionStimulus);
     }
     
     private void SendEmotionEvent()
     {
-        var e = Instantiate(emotionEvent);
-        e.emotion = Instantiate(emotionEvent.emotion);
-        EmotionModel.EmotionStimulusEvent.Invoke(e, false);
+        var e = Instantiate(emotionStimulus);
+        e.emotionState = Instantiate(emotionStimulus.emotionState);
+        EmotionEngine.EmotionEngine.EmotionStimulusEvent.Invoke(e);
     }
 }

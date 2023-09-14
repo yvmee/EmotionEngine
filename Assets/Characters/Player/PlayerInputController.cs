@@ -28,8 +28,8 @@ public class PlayerInputController : MonoBehaviour
 
     public GameObject pauseMenu;
 
-    private EmotionModel _emotionModel;
-    public EmotionEvent e;
+    private EmotionEngine.EmotionEngine _emotionEngine;
+    public EmotionStimulus e;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +38,7 @@ public class PlayerInputController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _renderer = GetComponent<SpriteRenderer>();
 
-        _emotionModel = FindObjectOfType<EmotionModel>();
+        _emotionEngine = FindObjectOfType<EmotionEngine.EmotionEngine>();
     }
 
     private void FixedUpdate()
@@ -109,8 +109,8 @@ public class PlayerInputController : MonoBehaviour
     void OnSendEmotionEvent()
     {
         Debug.Log("Pressed E");
-        //emotionModel.RaiseSoftEmotionEvent(e);
-        EmotionModel.EmotionStimulusEvent.Invoke(e, false);
+        //emotionModel.EmotionEvent(e);
+        EmotionEngine.EmotionEngine.EmotionStimulusEvent.Invoke(e);
     }
 
     void OnInteract()

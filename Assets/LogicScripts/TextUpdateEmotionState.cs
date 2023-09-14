@@ -12,17 +12,17 @@ public class TextUpdateEmotionState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EmotionModel.EmotionStateChanged.AddListener(UpdateText);
+        EmotionEngine.EmotionEngine.EmotionStateChanged.AddListener(UpdateText);
 
         _text = gameObject.GetComponent<TextMeshProUGUI>();
     }
 
-    private void UpdateText(DiscreteEmotion arg0)
+    private void UpdateText(EmotionState arg0)
     {
         _text.text = (DisplayEmotion(arg0));
     }
 
-    private string DisplayEmotion(DiscreteEmotion e)
+    private string DisplayEmotion(EmotionState e)
     {
         var sb = new StringBuilder();
         var strongestEmotion = e.GetEmotion(EmotionType.Joy);

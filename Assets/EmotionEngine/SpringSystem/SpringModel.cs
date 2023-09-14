@@ -5,7 +5,7 @@ using TMPro;
 namespace EmotionEngine
 {
 
-    public class SpringModel : MonoBehaviour, IPersonality, IMood
+    public class SpringModel : MonoBehaviour
     {
         // Fixed Springnode:Story 0 ~ Spring 0 ~ Springnode:Personality 1 ~ Spring 1 ~ Springnode:Emotion 2
         private SpringNode storyNode = new SpringNode();
@@ -15,11 +15,17 @@ namespace EmotionEngine
         private Spring springPersonalityEmotion = new Spring();
 
         [SerializeField] private Vector6 personality;
+
+        [SerializeField] private double freezeThreshold = 0.01d;
         
         public double adjustments = 1f;
         public double storyNodeFactor = 5f;
         
+        public static EmotionStimulusEvent EmotionEvent = new();
+        public static ChangePersonality ChangePersonalityEvent = new();
         
+        private EmotionState _emotionStateState;
+
         // Debug
         public TextMeshProUGUI text;
         
@@ -31,7 +37,7 @@ namespace EmotionEngine
             storyNode.Position = new Vector6(0, 0, 0, 0, 0, 0);
             storyNode.Velocity = new Vector6(0, 0, 0, 0, 0, 0);
             storyNode.mass = 1d;
-            personalityNode.Position = new Vector6();
+            personalityNode.Position = new Vector6(0.2, 0.2, 0.2, 0.2, 0.2, 0.2);
             ResetPersonalityNode();
             personalityNode.Velocity = new Vector6(0, 0, 0, 0, 0, 0);
             personalityNode.mass = 1d;
@@ -51,25 +57,71 @@ namespace EmotionEngine
             springStoryPersonality.node0 = storyNode;
             springStoryPersonality.node1 = personalityNode;
             
+            _emotionStateState = ScriptableObject.CreateInstance<EmotionState>();
+            EmotionEvent.AddListener(EmotionStimulus);
+            ChangePersonalityEvent.AddListener(ProcessPersonalityEvent);
+        }
+
+        private void ProcessPersonalityEvent(PersonalityEvent personalityEvent)
+        {
+            personality.x = personalityEvent.tendencies.GetEmotion(EmotionType.Joy).Intensity;
+            personality.y = personalityEvent.tendencies.GetEmotion(EmotionType.Sadness).Intensity;
+            personality.z = personalityEvent.tendencies.GetEmotion(EmotionType.Anger).Intensity;
+            personality.u = personalityEvent.tendencies.GetEmotion(EmotionType.Fear).Intensity;
+            personality.v = personalityEvent.tendencies.GetEmotion(EmotionType.Surprise).Intensity;
+            personality.w = personalityEvent.tendencies.GetEmotion(EmotionType.Pride).Intensity;
+            ResetPersonalityNode();
+            Unfreeze();
         }
 
         private void FixedUpdate()
         {
             Decay();
         }
+        
+        public void EmotionStimulus(EmotionStimulus emotionStimulus)
+        {
+            Unfreeze();
+            if (emotionStimulus.storyEvent) RaiseStoryEmotionEvent(emotionStimulus);
+            else RaiseEmotionEvent(emotionStimulus);
+        }
 
+        private void Unfreeze()
+        {
+            springPersonalityEmotion.freeze = false;
+            springStoryPersonality.freeze = false;
+            emotionNode.Velocity = new Vector6(0, 0, 0, 0, 0, 0);
+            personalityNode.Velocity = new Vector6(0, 0, 0, 0, 0, 0);
+            storyNode.Velocity = new Vector6(0, 0, 0, 0, 0, 0);
+        }
+
+
+        public void RaiseStoryEmotionEvent(EmotionStimulus emotionStimulus)
+        {
+            SetStoryNode(emotionStimulus.emotionState);
+            SetSpringNode(emotionStimulus.emotionState, emotionNode);
+        }
+        
+        public void RaiseEmotionEvent(EmotionStimulus emotionStimulus)
+        {
+            ResetPersonalityNode();
+            SetSpringNode(emotionStimulus.emotionState, emotionNode);
+            SetStoryNode(emotionStimulus.emotionState);
+        }
+        
+        
         public void SpringCalculation()
         {
-            // Calculate new position
-            storyNode.Position.Add(storyNode.Velocity.Copy().Multiply(Time.fixedDeltaTime * adjustments));
+            if (springStoryPersonality.freeze && springPersonalityEmotion.freeze)
+                return;
             personalityNode.Position.Add(personalityNode.Velocity.Copy().Multiply(Time.fixedDeltaTime * adjustments));
             emotionNode.Position.Add(emotionNode.Velocity.Copy().Multiply(Time.fixedDeltaTime * adjustments));
-            //personalityNode.Position.Add(personalityNode.Velocity.Copy().Multiply(0.5f));
-            //emotionNode.Position.Add(emotionNode.Velocity.Copy().Multiply(0.5f));
 
             // Calculate new Velocities
-            CalculateVelocities(springStoryPersonality);
-            CalculateVelocities(springPersonalityEmotion);
+            if (!springStoryPersonality.freeze)
+                CalculateVelocities(springStoryPersonality);
+            if(!springPersonalityEmotion.freeze)
+                CalculateVelocities(springPersonalityEmotion);
         }
 
         private void CalculateVelocities(Spring spring)
@@ -78,6 +130,12 @@ namespace EmotionEngine
             var direction = spring.node0.Position.Copy();
             direction.Subtract(spring.node1.Position);
             var distance = direction.Magnitude();
+
+            if (distance < freezeThreshold)
+            {
+                spring.freeze = true;
+                return;
+            }
 
             // Step 2: Calculate force f
             direction.Normalize();
@@ -92,39 +150,16 @@ namespace EmotionEngine
             // Step 4: Calculate new Velocity
             spring.node0.Velocity.Add(acceleration0.Multiply(Time.fixedDeltaTime * adjustments));
             spring.node1.Velocity.Add(acceleration1.Multiply(Time.fixedDeltaTime * adjustments));
-            
-            //spring.node0.Velocity.Add(acceleration0.Multiply(0.5f));
-            //spring.node1.Velocity.Add(acceleration1.Multiply(0.5f));
         }
 
-
-        DiscreteEmotion IPersonality.ProcessEmotion(EmotionEvent emotionEvent)
+        public void SetStoryNode(EmotionState emotionState)
         {
-            ResetPersonalityNode();
-            
-            return emotionEvent.emotion;
-        }
-
-        public void SetPersonality(PersonalityEvent personalityEvent)
-        {
-            throw new NotImplementedException();
-        }
-
-        DiscreteEmotion IMood.ProcessEmotion(DiscreteEmotion emotionEvent)
-        {
-            SetSpringNode(emotionEvent, emotionNode);
-            SetStoryNode(emotionEvent);
-            return emotionEvent;
-        }
-        
-        public void SetStoryNode(DiscreteEmotion emotion)
-        {
-            storyNode.Position.x = emotion.GetEmotion(EmotionType.Joy).Intensity / storyNodeFactor;
-            storyNode.Position.y = emotion.GetEmotion(EmotionType.Sadness).Intensity / storyNodeFactor;
-            storyNode.Position.z = emotion.GetEmotion(EmotionType.Anger).Intensity / storyNodeFactor;
-            storyNode.Position.u = emotion.GetEmotion(EmotionType.Fear).Intensity / storyNodeFactor;
-            storyNode.Position.v = emotion.GetEmotion(EmotionType.Surprise).Intensity / storyNodeFactor;
-            storyNode.Position.w = emotion.GetEmotion(EmotionType.Pride).Intensity / storyNodeFactor;
+            storyNode.Position.x = emotionState.GetEmotion(EmotionType.Joy).Intensity / storyNodeFactor;
+            storyNode.Position.y = emotionState.GetEmotion(EmotionType.Sadness).Intensity / storyNodeFactor;
+            storyNode.Position.z = emotionState.GetEmotion(EmotionType.Anger).Intensity / storyNodeFactor;
+            storyNode.Position.u = emotionState.GetEmotion(EmotionType.Fear).Intensity / storyNodeFactor;
+            storyNode.Position.v = emotionState.GetEmotion(EmotionType.Surprise).Intensity / storyNodeFactor;
+            storyNode.Position.w = emotionState.GetEmotion(EmotionType.Pride).Intensity / storyNodeFactor;
         }
         
         private void ResetPersonalityNode()
@@ -137,22 +172,17 @@ namespace EmotionEngine
             personalityNode.Position.w = personality.w;
         }
 
-        private void SetSpringNode(DiscreteEmotion emotion, SpringNode node)
+        private void SetSpringNode(EmotionState emotionState, SpringNode node)
         {
-            node.Position.x = emotion.GetEmotion(EmotionType.Joy).Intensity;
-            node.Position.y = emotion.GetEmotion(EmotionType.Sadness).Intensity;
-            node.Position.z = emotion.GetEmotion(EmotionType.Anger).Intensity;
-            node.Position.u = emotion.GetEmotion(EmotionType.Fear).Intensity;
-            node.Position.v = emotion.GetEmotion(EmotionType.Surprise).Intensity;
-            node.Position.w = emotion.GetEmotion(EmotionType.Pride).Intensity;
-        }
-        
-        public DiscreteEmotion GetCurrentMood()
-        {
-            throw new System.NotImplementedException();
+            node.Position.x = emotionState.GetEmotion(EmotionType.Joy).Intensity;
+            node.Position.y = emotionState.GetEmotion(EmotionType.Sadness).Intensity;
+            node.Position.z = emotionState.GetEmotion(EmotionType.Anger).Intensity;
+            node.Position.u = emotionState.GetEmotion(EmotionType.Fear).Intensity;
+            node.Position.v = emotionState.GetEmotion(EmotionType.Surprise).Intensity;
+            node.Position.w = emotionState.GetEmotion(EmotionType.Pride).Intensity;
         }
 
-        
+
 
         public void Decay()
         {
@@ -161,7 +191,7 @@ namespace EmotionEngine
             text.text = "Personality Node Pos: \n" + (float) personalityNode.Position.x + ",\n" + (float) personalityNode.Position.y + ",\n" + (float) personalityNode.Position.z +
                         ",\n" + (float) personalityNode.Position.u + ",\n" + (float) personalityNode.Position.v + ",\n" + (float) personalityNode.Position.w + ",\n" +
             "Emotion Node Pos: \n" + (float) emotionNode.Position.x + ",\n" + (float) emotionNode.Position.y + ",\n" + (float) emotionNode.Position.z +
-                ",\n" + (float) emotionNode.Position.u + ",\n" + (float) emotionNode.Position.v + ",\n" + (float) emotionNode.Position.w + ",\n";
+                ",\n" + (float) emotionNode.Position.u + ",\n" + (float) emotionNode.Position.v + ",\n" + (float) emotionNode.Position.w + ",\n"; 
         }
         
         private void ClampPos()

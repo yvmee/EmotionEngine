@@ -7,23 +7,25 @@ using UnityEngine;
 
 public class AnimalEmotionAsset : EmotionAsset
 {
-    [SerializeField] private float treshold = 0.2f;
-    private Animal _animal;
 
+    private Animal _animal;
+    
     private void Start()
     {
         _animal = GetComponent<Animal>();
     }
 
-    protected override void ChangeAsset(DiscreteEmotion emotion)
+    protected override void ChangeAsset(EmotionState emotionState)
     {
+        if (_animal == null) return;
+        
         var strongest = new EmotionVariable(EmotionType.Joy);
-        foreach (var e in emotion.GetEmotions().Where(e => e.Intensity >= strongest.Intensity))
+        foreach (var e in emotionState.GetEmotions().Where(e => e.Intensity >= strongest.Intensity))
         {
             strongest = e;
         }
 
-        if (strongest.Intensity <= treshold) return;
+        if (strongest.Intensity <= threshold) return;
 
         switch (strongest.Type)
         {

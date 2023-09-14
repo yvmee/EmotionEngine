@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e420af738b86541825aeeb5e25b96a, type: 3}
-  m_Name: WoodArea Event
+  m_Script: {fileID: 11500000, guid: 4fd163c82d4b547439839799e759eb8d, type: 3}
+  m_Name: TrustPersonality
   m_EditorClassIdentifier: 
-  emotion: {fileID: 11400000, guid: 121b20ef9929b5c4b86b1beb0a10da64, type: 2}
-  goalAlignments: []
+  tendencies: {fileID: 11400000, guid: 5312a2208aec5c940a7a0e08c6d0b889, type: 2}
+  goals: []

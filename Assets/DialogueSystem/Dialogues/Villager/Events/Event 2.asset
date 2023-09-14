@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e420af738b86541825aeeb5e25b96a, type: 3}
   m_Name: Event 2
   m_EditorClassIdentifier: 
-  emotion: {fileID: 11400000, guid: 9c46d351277e8064a98812150b21d6af, type: 2}
+  emotionState: {fileID: 11400000, guid: 9c46d351277e8064a98812150b21d6af, type: 2}
   goalAlignments:
   - tag: Adventure
-    alignment: 1
+    aligns: 0
+  storyEvent: 0

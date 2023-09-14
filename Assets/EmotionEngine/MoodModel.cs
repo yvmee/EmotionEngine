@@ -4,31 +4,35 @@ using UnityEngine.Serialization;
 
 namespace EmotionEngine
 {
-    public class MoodModel : MonoBehaviour, IMood
+    public class MoodModel : MonoBehaviour
     {
-        [SerializeField] private DiscreteEmotion currentMood;
+        [SerializeField] private EmotionState currentMood;
 
-        [SerializeField] private float impactOnEmotion = 0.1f;
-        [SerializeField] private float impactOnMood = 0.5f;
+        [SerializeField] private float moodImpactOnEmotion = 0.7f;
+        [SerializeField] private float emotionImpactOnMood = 0.8f;
 
         private void Awake()
         {
-            if (currentMood == null) currentMood = ScriptableObject.CreateInstance<DiscreteEmotion>();
+            if (currentMood == null) currentMood = ScriptableObject.CreateInstance<EmotionState>();
         }
 
-        public DiscreteEmotion ProcessEmotion(DiscreteEmotion emotionEvent)
+        public EmotionState ProcessEmotion(EmotionState emotionStateEvent)
         {
-            foreach (var e in emotionEvent.GetEmotions())
+            foreach (var emotionVariable in emotionStateEvent.GetEmotions())
             {
 
-                e.Intensity += (currentMood.GetEmotion(e.Type).Intensity - e.Intensity) * impactOnEmotion;
-                currentMood.GetEmotion(e.Type).Intensity += (e.Intensity - currentMood.GetEmotion(e.Type).Intensity) * impactOnMood;
+                emotionVariable.Intensity += 
+                    (currentMood.GetEmotion(emotionVariable.Type).Intensity - emotionVariable.Intensity) 
+                    * moodImpactOnEmotion;
+                currentMood.GetEmotion(emotionVariable.Type).Intensity += 
+                    (emotionVariable.Intensity - currentMood.GetEmotion(emotionVariable.Type).Intensity) 
+                    * emotionImpactOnMood;
             }
             
-            return emotionEvent;
+            return emotionStateEvent;
         }
 
-        public DiscreteEmotion GetCurrentMood()
+        public EmotionState GetCurrentMood()
         {
             return currentMood;
         }

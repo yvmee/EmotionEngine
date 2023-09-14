@@ -13,7 +13,7 @@ public class UIChoiceController : MonoBehaviour
     private UITextController uiText;
     
     private DialogueNode _choiceNextNode;
-    private EmotionEvent _emotion;
+    private EmotionStimulus _emotion;
     private bool _hardEmotion;
     private PersonalityEvent _personalityEvent;
 
@@ -23,7 +23,7 @@ public class UIChoiceController : MonoBehaviour
         {
             choice.text = value.ChoicePreview;
             _choiceNextNode = value.ChoiceNode;
-            _emotion = value.EmotionEvent;
+            _emotion = value.EmotionStimulus;
             _hardEmotion = value.HardEmotion;
             _personalityEvent = value.PersonalityEvent;
         }
@@ -45,14 +45,14 @@ public class UIChoiceController : MonoBehaviour
         if (_emotion != null) 
             SendEmotionEvent();
         if (_personalityEvent != null)
-            EmotionModel.SetPersonalityEvent.Invoke(_personalityEvent);
+            EmotionEngine.EmotionEngine.ChangePersonalityEvent.Invoke(_personalityEvent);
         uiText.Visit(_choiceNextNode);
     }
     
     private void SendEmotionEvent()
     {
         var e = Instantiate(_emotion);
-        e.emotion = Instantiate(_emotion.emotion);
-        EmotionModel.EmotionStimulusEvent.Invoke(e, _hardEmotion);
+        e.emotionState = Instantiate(_emotion.emotionState);
+        EmotionEngine.EmotionEngine.EmotionStimulusEvent.Invoke(e);
     }
 }

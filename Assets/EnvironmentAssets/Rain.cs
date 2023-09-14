@@ -29,14 +29,20 @@ public class Rain : EmotionAsset
     }
 
 
-    protected override void ChangeAsset(DiscreteEmotion emotion)
+    protected override void ChangeAsset(EmotionState emotionState)
     {
+        if(_rainSystem == null) return;
+        
         if (!_outside) return;
-        if (emotion.GetEmotion(EmotionType.Sadness).Intensity > 0.5f)
+        
+        var strongest = new EmotionVariable(EmotionType.Joy);
+        
+        foreach (var e in emotionState.GetEmotions())
         {
-            var rainSystemEmission = _rainSystem.emission;
-            rainSystemEmission.enabled = true;
-        } else if (emotion.GetEmotion(EmotionType.Sadness).Intensity > 0.5f)
+            if (e.Intensity >= strongest.Intensity) strongest = e;
+        }
+
+        if (strongest.Type == EmotionType.Sadness && emotionState.GetEmotion(EmotionType.Sadness).Intensity > 0.5f)
         {
             var rainSystemEmission = _rainSystem.emission;
             rainSystemEmission.enabled = true;

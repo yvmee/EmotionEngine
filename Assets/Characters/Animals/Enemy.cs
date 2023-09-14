@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public EmotionEvent emotion;
-    public bool hardEmotion;
+    public EmotionStimulus emotion;
     public float Health
     {
         set
@@ -22,7 +21,7 @@ public class Enemy : MonoBehaviour
 
     private void Defeated()
     {
-        if (emotion != null) EmotionModel.EmotionStimulusEvent.Invoke(emotion, hardEmotion);
+        if (emotion != null) EmotionEngine.EmotionEngine.EmotionStimulusEvent.Invoke(emotion);
         Destroy(gameObject);
     }
 

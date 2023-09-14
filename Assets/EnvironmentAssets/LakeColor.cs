@@ -17,19 +17,19 @@ public class LakeColor : EmotionAsset
     public Color surpriseColor;
     public Color prideColor;
 
-    public float treshold = 0.2f;
-    protected override void ChangeAsset(DiscreteEmotion emotion)
+    protected override void ChangeAsset(EmotionState emotionState)
     {
         var strongest = new EmotionVariable(EmotionType.Joy);
         
-        foreach (var e in emotion.GetEmotions())
+        foreach (var e in emotionState.GetEmotions())
         {
             if (e.Intensity >= strongest.Intensity) strongest = e;
         }
         
-        if (strongest.Intensity <= treshold)
+        if (strongest.Intensity <= threshold)
         {
             gameObject.GetComponent<Tilemap>().color = neutralColor;
+            return;
         }
         
         gameObject.GetComponent<Tilemap>().color = strongest.Type switch

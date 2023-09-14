@@ -17,14 +17,18 @@ public class DialogueInteraction : MonoBehaviour, IInteractable
 
     public void Interact(GameObject player)
     {
-        SideQuest sideQuest = gameObject.GetComponent<SideQuest>();
-        DialogueController.StartDialogue(dialogueObjects[_index], sideQuest);
+        DialogueController.StartDialogue(dialogueObjects[_index]);
         inDialogue = true;
     }
 
     private void StopInteraction()
     {
-        if (dialogueObjects.Length > 0) _index = (_index + 1) % dialogueObjects.Length;
+
+        if (_index < (dialogueObjects.Length - 1))
+        {
+            ++_index;
+        }
+        
         inDialogue = false;
     }
 }

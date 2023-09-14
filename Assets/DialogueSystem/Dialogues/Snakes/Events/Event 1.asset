@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e420af738b86541825aeeb5e25b96a, type: 3}
   m_Name: Event 1
   m_EditorClassIdentifier: 
-  emotion: {fileID: 11400000, guid: f02fbb5743c27d84daf030dfa7a8eb83, type: 2}
+  emotionState: {fileID: 11400000, guid: f02fbb5743c27d84daf030dfa7a8eb83, type: 2}
   goalAlignments:
   - tag: Defeat enemies
-    alignment: 1
+    aligns: 1
+  storyEvent: 0

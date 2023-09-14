@@ -10,24 +10,22 @@ namespace EmotionEngine
     {
         [SerializeField] private string tag;
         [SerializeField] private EmotionVariable emotionVariableImpact;
-
         public string Tag => tag;
         public EmotionVariable EmotionVariable => emotionVariableImpact;
     }
-    public class PersonalityModel : MonoBehaviour, IPersonality
+    public class PersonalityModel : MonoBehaviour
     {
-        // Proneness to Emotion
-        [SerializeField] private float joyProneness;
-        [SerializeField] private float sadnessProneness;
-        [SerializeField] private float angerProneness;
-        [SerializeField] private float fearProneness;
-        [SerializeField] private float surpriseProneness;
-        [SerializeField] private float prideProneness;
+        [SerializeField] private float joyTendency;
+        [SerializeField] private float sadnessTendency;
+        [SerializeField] private float angerTendency;
+        [SerializeField] private float fearTendency;
+        [SerializeField] private float surpriseTendency;
+        [SerializeField] private float prideTendency;
 
         [SerializeField] private List<Goal> goals;
-        private Dictionary<string, EmotionVariable> _goals = new Dictionary<string, EmotionVariable>();
+        private Dictionary<string, EmotionVariable> _goals = new();
 
-        [SerializeField] private float magicnumber = 0.5f;
+        [SerializeField] private float personalityImpactOnEmotion = 0.5f;
 
         private void Awake()
         {
@@ -37,75 +35,70 @@ namespace EmotionEngine
             }
         }
 
-        public DiscreteEmotion ProcessEmotion(EmotionEvent emotionEvent)
+        public EmotionState ProcessEmotion(EmotionStimulus emotionStimulus)
         {
-            var emotion = emotionEvent.emotion;
-            
-            // process Goals
-            foreach (var goalAlignment in emotionEvent.goalAlignments)
+            EmotionState emotionState = ScriptableObject.CreateInstance<EmotionState>();
+            emotionState.SetEmotionState(emotionStimulus.emotionState);
+
+            // process goal alignment
+            foreach (var goalAlignment in emotionStimulus.goalAlignments)
             {
                 if (!_goals.ContainsKey(goalAlignment.tag)) break;
                 
                 var effect = _goals[goalAlignment.tag];
-                if (goalAlignment.alignment)
+                // goal alignment leads to increased joy and slightly decreased negative emotions
+                if (goalAlignment.aligns)
                 {
-                    emotion.GetEmotion(effect.Type).Intensity += effect.Intensity;
-                    emotion.GetEmotion(EmotionType.Sadness).Intensity -= effect.Intensity/5 * 2;
-                    emotion.GetEmotion(EmotionType.Anger).Intensity -= effect.Intensity/5 * 2;
-                    emotion.GetEmotion(EmotionType.Fear).Intensity -= effect.Intensity/5;
+                    emotionState.GetEmotion(effect.Type).Intensity += effect.Intensity;
+                    emotionState.GetEmotion(EmotionType.Sadness).Intensity -= effect.Intensity/5;
+                    emotionState.GetEmotion(EmotionType.Anger).Intensity -= effect.Intensity/5;
+                    emotionState.GetEmotion(EmotionType.Fear).Intensity -= effect.Intensity/5;
                 }
-                
+                // goal contradiction leads to increased negative emotions
                 else
                 {
-                    emotion.GetEmotion(EmotionType.Sadness).Intensity += effect.Intensity/5 * 2;
-                    emotion.GetEmotion(EmotionType.Anger).Intensity += effect.Intensity/5 * 2;
-                    emotion.GetEmotion(EmotionType.Fear).Intensity += effect.Intensity/5;
+                    emotionState.GetEmotion(EmotionType.Sadness).Intensity += effect.Intensity/5 * 2;
+                    emotionState.GetEmotion(EmotionType.Anger).Intensity += effect.Intensity/5 * 2;
+                    emotionState.GetEmotion(EmotionType.Fear).Intensity += effect.Intensity/5;
                 }
             }
             
             // process emotion variables
-            foreach (var e in emotion.GetEmotions())
+            
+            foreach (var emotionVariable in emotionState.GetEmotions())
             {
-                float proneness = e.Type switch
+                float tendency = emotionVariable.Type switch
                 {
-                    EmotionType.Joy => joyProneness,
-                    EmotionType.Sadness => sadnessProneness,
-                    EmotionType.Anger => angerProneness,
-                    EmotionType.Fear => fearProneness,
-                    EmotionType.Surprise => surpriseProneness,
-                    EmotionType.Pride => prideProneness,
+                    EmotionType.Joy => joyTendency,
+                    EmotionType.Sadness => sadnessTendency,
+                    EmotionType.Anger => angerTendency,
+                    EmotionType.Fear => fearTendency,
+                    EmotionType.Surprise => surpriseTendency,
+                    EmotionType.Pride => prideTendency,
                     _ => throw new ArgumentOutOfRangeException()
                 };
-                e.Intensity += e.Intensity * proneness * magicnumber;
+                emotionVariable.Intensity += emotionVariable.Intensity * (tendency - 0.5f) * personalityImpactOnEmotion;
             }
-            
-            
-            return emotionEvent.emotion;
+            return emotionState;
         }
 
         public void SetPersonality(PersonalityEvent personalityEvent)
         {
-            DiscreteEmotion emotion = personalityEvent.proneness;
-            if (emotion != null)
+            EmotionState emotionState = personalityEvent.tendencies;
+            if (emotionState != null)
             {
-                if (personalityEvent.proneness.GetEmotion(EmotionType.Joy).Intensity > 0)
-                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Joy).Intensity) /
-                                   2;
-                if (personalityEvent.proneness.GetEmotion(EmotionType.Sadness).Intensity > 0)
-                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Sadness).Intensity) /
-                                   2;
-                if (personalityEvent.proneness.GetEmotion(EmotionType.Anger).Intensity > 0)
-                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Anger).Intensity) /
-                                   2;
-                if (personalityEvent.proneness.GetEmotion(EmotionType.Fear).Intensity > 0)
-                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Fear).Intensity) /
-                                   2;
-                if (personalityEvent.proneness.GetEmotion(EmotionType.Surprise).Intensity > 0)
-                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Surprise).Intensity) /
-                                   2;
-                if (personalityEvent.proneness.GetEmotion(EmotionType.Pride).Intensity > 0)
-                    joyProneness = (joyProneness + personalityEvent.proneness.GetEmotion(EmotionType.Pride).Intensity) /
-                                   2;
+                if (personalityEvent.tendencies.GetEmotion(EmotionType.Joy).Intensity >= 0)
+                    joyTendency = personalityEvent.tendencies.GetEmotion(EmotionType.Joy).Intensity;
+                if (personalityEvent.tendencies.GetEmotion(EmotionType.Sadness).Intensity >= 0)
+                    sadnessTendency = personalityEvent.tendencies.GetEmotion(EmotionType.Sadness).Intensity;
+                if (personalityEvent.tendencies.GetEmotion(EmotionType.Anger).Intensity >= 0)
+                    angerTendency = personalityEvent.tendencies.GetEmotion(EmotionType.Anger).Intensity;
+                if (personalityEvent.tendencies.GetEmotion(EmotionType.Fear).Intensity >= 0)
+                    fearTendency = personalityEvent.tendencies.GetEmotion(EmotionType.Fear).Intensity;
+                if (personalityEvent.tendencies.GetEmotion(EmotionType.Surprise).Intensity >= 0)
+                    surpriseTendency = personalityEvent.tendencies.GetEmotion(EmotionType.Surprise).Intensity;
+                if (personalityEvent.tendencies.GetEmotion(EmotionType.Pride).Intensity >= 0)
+                    prideTendency = personalityEvent.tendencies.GetEmotion(EmotionType.Pride).Intensity;
             }
 
             if (personalityEvent.goals != null)
@@ -116,7 +109,6 @@ namespace EmotionEngine
                     Debug.Log("Goal added: " + goal.Tag);
                 }
             }
-            
         }
     }
 }
