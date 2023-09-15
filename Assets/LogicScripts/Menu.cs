@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    public static bool Paused;
+    public static bool Paused = false;
 
     private void Start()
     {
